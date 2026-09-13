@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История Древнего мира - 5 класс</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f4f7f6;
+            color: #333;
+            padding: 15px;
+            line-height: 1.7;
+        }
+        .app-container { max-width: 600px; margin: 0 auto; }
+        h1 { text-align: center; color: #2c3e50; margin-bottom: 20px; font-size: 1.6rem; }
+        .menu { display: flex; flex-direction: column; gap: 12px; }
+        .menu-item {
+            background: white; border-radius: 14px; padding: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border-left: 6px solid #3498db; cursor: pointer;
+            transition: transform 0.2s; display: flex;
+            align-items: center; justify-content: space-between;
+        }
+        .menu-item:hover { transform: translateY(-2px); }
+        .menu-item span { font-weight: 600; font-size: 1rem; }
+        .menu-item .icon { font-size: 1.4rem; }
+        .menu-item.final { border-left-color: #e67e22; }
+        .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
+        .back-btn {
+            background: #e0e0e0; border: none; padding: 10px 18px;
+            border-radius: 30px; font-size: 0.95rem; cursor: pointer;
+            font-weight: 600; color: #555;
+        }
+        .content-area {
+            background: white; border-radius: 14px; padding: 18px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .card {
+            background: #f9f9f9; border-radius: 12px; padding: 14px;
+            margin-bottom: 14px; border-left: 4px solid #3498db;
+        }
+        .card h3 { color: #2980b9; margin-bottom: 6px; font-size: 1.05rem; }
+        .card p { font-size: 0.95rem; margin-bottom: 8px; }
+        .card ul { margin-left: 18px; font-size: 0.95rem; }
+        .card li { margin-bottom: 4px; }
+        .fun-fact {
+            background: #fff3cd; border-left-color: #f1c40f;
+            padding: 12px; border-radius: 8px; margin-top: 12px; font-size: 0.9rem;
+        }
+        .question-block { margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid #eee; }
+        .question-block:last-child { border-bottom: none; }
+        .question-text { font-weight: 600; margin-bottom: 8px; font-size: 0.95rem; }
+        .options { display: flex; flex-direction: column; gap: 6px; }
+        .option-btn {
+            background: #f0f0f0; border: 2px solid transparent;
+            padding: 10px; border-radius: 8px; text-align: left;
+            font-size: 0.9rem; cursor: pointer; transition: background 0.2s;
+        }
+        .option-btn:hover { background: #e0e0e0; }
+        .option-btn.correct { background: #d4edda; border-color: #27ae60; }
+        .option-btn.wrong { background: #f8d7da; border-color: #e74c3c; }
+        .feedback { margin-top: 6px; font-weight: 600; font-size: 0.85rem; }
+        .feedback.correct { color: #27ae60; }
+        .feedback.wrong { color: #e74c3c; }
+        .hint-box {
+            margin-top: 8px;
+            background: #e8f4fd;
+            border-left: 3px solid #3498db;
+            padding: 8px 10px;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            display: none;
+        }
+        .hint-box.show { display: block; }
+        .hint-btn {
+            background: #3498db; color: white; border: none;
+            padding: 6px 14px; border-radius: 20px;
+            font-size: 0.8rem; cursor: pointer; margin-top: 6px;
+        }
+        .hint-btn:hover { background: #2980b9; }
+        .hidden { display: none; }
+        .progress-bar {
+            width: 100%; height: 8px; background: #e0e0e0;
+            border-radius: 4px; margin-bottom: 15px; overflow: hidden;
+        }
+        .progress-fill { height: 100%; background: #27ae60; width: 0%; transition: width 0.3s; }
+        .section-title-block {
+            background: #3498db; color: white; padding: 12px;
+            border-radius: 10px; margin-bottom: 15px;
+            text-align: center; font-weight: 600;
+        }
+        .final-title-block {
+            background: #e67e22; color: white; padding: 12px;
+            border-radius: 10px; margin-bottom: 15px;
+            text-align: center; font-weight: 600;
+        }
+        .results-box {
+            background: #d4edda;
+            border: 2px solid #27ae60;
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 15px;
+            text-align: center;
+        }
+        .results-box h3 { color: #27ae60; margin-bottom: 8px; }
+        .results-box p { font-size: 1rem; }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <div id="main-menu">
+            <h1>🏛️ История Древнего мира</h1>
+            <p style="text-align: center; margin-bottom: 18px; color: #7f8c8d; font-size: 0.9rem;">5 класс • Школа России • Глава I</p>
+            <div class="menu">
+                <div class="menu-item" onclick="openSection('1')">
+                    <span>§1. Древнейшие люди</span>
+                    <span class="icon">🦴</span>
+                </div>
+                <div class="menu-item" onclick="openSection('2')">
+                    <span>§2. Первобытные охотники и собиратели</span>
+                    <span class="icon">🏹</span>
+                </div>
+                <div class="menu-item" onclick="openSection('3')">
+                    <span>§3. Верования и искусство</span>
+                    <span class="icon">🎨</span>
+                </div>
+                <div class="menu-item" onclick="openSection('4')">
+                    <span>§4. Возникновение земледелия, скотоводства и ремесла</span>
+                    <span class="icon">🌾</span>
+                </div>
+                <div class="menu-item final" onclick="openSection('final')">
+                    <span>🏆 Итоговый тест по главе I</span>
+                    <span class="icon">⭐</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="section-content" class="hidden">
+            <div class="section-header">
+                <button class="back-btn" onclick="goBack()">← Назад</button>
+                <span id="section-title" style="font-weight: 700; color: #2c3e50; font-size: 0.9rem;"></span>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progress-fill"></div>
+            </div>
+            <div class="content-area" id="content-area"></div>
+        </div>
+    </div>
+
+    <script>
+        const data = {
+            '1': {
+                title: '§1. Древнейшие люди',
+                explanation: `
+                    <div class="section-title-block">Тема: Как появился человек и как он развивался</div>
+                    <h2 style="color: #2980b9; margin-bottom: 12px; font-size: 1.15rem;">1. Мифы и наука о происхождении человека</h2>
+                    <div class="card">
+                        <p>В древности разные народы объясняли появление человека по-своему: его создали боги или он произошёл от животного. С появлением <strong>археологии</strong> и <strong>антропологии</strong> учёные смогли воссоздать картину жизни древнейших людей. В середине XIX века <strong>Чарлз Дарвин</strong> сформулировал <strong>теорию эволюции</strong> путём естественного отбора.</p>
+                    </div>
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">2. Основные этапы развития человека</h2>
+                    <div class="card">
+                        <p>Период от появления человека до начала использования металла называют <strong>каменным веком</strong>. На него приходится 99% всей истории человечества.</p>
+                        <ul>
+                            <li><strong>Австралопитек</strong> — 6,5–1 млн лет назад, Африка. Ходил на двух ногах, орудий не делал.</li>
+                            <li><strong>Человек умелый (Homo habilis)</strong> — 2,5 млн лет назад. Первые орудия труда.</li>
+                            <li><strong>Питекантроп и синантроп</strong> — 1 млн лет назад. Ножи, рубила, наконечники.</li>
+                            <li><strong>Неандерталец</strong> — 300–40 тысяч лет назад. Жил в пещерах, охотился на мамонтов.</li>
+                            <li><strong>Кроманьонец</strong> — 40 тысяч лет назад. Человек современного типа.</li>
+                        </ul>
+                    </div>
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">3. Первобытность на территории России</h2>
+                    <div class="card">
+                        <p>Заселение России — более <strong>2 млн лет назад</strong>. Стоянки: <strong>Костёнки</strong> (Воронежская обл.), <strong>Сунгирь</strong> (под Владимиром), <strong>Капова пещера</strong> (Башкирия), <strong>Мальта</strong> (под Иркутском).</p>
+                    </div>
+                    <div class="fun-fact"><strong>⚽ Футбольная минутка:</strong> Кто быстрее всех бегал? Кроманьонец!</div>
+                `,
+                questions: [
+                    { text: '1. Что привело к выделению человека от животного мира?', options: ['Умение быстро бегать', 'Труд и изготовление орудий', 'Способность плавать', 'Жизнь в одиночку'], correct: 1, explanation: 'Труд и изготовление орудий труда выделили человека из животного мира.' },
+                    { text: '2. Что в облике древнейших людей общего с современными? Чем мы отличаемся?', options: ['Общее — прямохождение; отличие — у древних был более крупный мозг', 'Общее — умение говорить; отличие — у древних не было речи', 'Общее — прямохождение и руки; отличие — у древних был покатый лоб и надбровные дуги', 'Общее — одежда; отличие — древние не носили обувь'], correct: 2, explanation: 'Общее — прямохождение и строение рук. Отличие — покатый лоб, надбровные дуги.' },
+                    { text: '3. Как древние люди находили пищу и защищались?', options: ['Выращивали растения', 'Охотились, собирали, использовали огонь и жилища', 'Покупали еду', 'Ловили рыбу сетями'], correct: 1, explanation: 'Охота, собирательство, огонь, жилища.' },
+                    { text: '4. На территории каких стран были обнаружены останки древнейших людей?', options: ['ЮАР, Кения, Танзания, Китай, Германия, Франция', 'Только Египет и Индия', 'Только Россия и Китай', 'Бразилия, Аргентина, Мексика'], correct: 0, explanation: 'Южная Африка, Кения, Танзания, Китай, Германия, Франция.' },
+                    { text: '5. Почему древний человек начал использовать орудия труда?', options: ['Для игры', 'Для выживания: камни, палки, рубила, копья', 'Для украшения', 'Для торговли'], correct: 1, explanation: 'Орудия труда нужны были для выживания.' },
+                    { text: '6. Когда на территории России появились первые люди?', options: ['Около 100 тысяч лет назад', 'Более 2 миллионов лет назад', 'Около 10 тысяч лет назад', 'Более 40 тысяч лет назад'], correct: 1, explanation: 'Более 2 миллионов лет назад.' },
+                    { text: '7. Какие археологические находки на территории России наиболее интересны?', options: ['Стоянка Костёнки', 'Сунгирь', 'Капова пещера', 'Все перечисленные'], correct: 3, explanation: 'Все эти стоянки уникальны.' },
+                    { text: '8. Как без речи и письменности древние люди общались?', options: ['С помощью жестов, звуков, рисунков', 'С помощью книг', 'С помощью телефона', 'С помощью писем'], correct: 0, explanation: 'Жесты, звуки, мимика, рисунки.' }
+                ],
+                chronology: {
+                    question: 'Расположите в хронологической последовательности:',
+                    items: [
+                        { id: 'avstralopitek', name: 'Австралопитек' },
+                        { id: 'habilis', name: 'Человек умелый' },
+                        { id: 'pitekantrop', name: 'Питекантроп' },
+                        { id: 'neandertalec', name: 'Неандерталец' },
+                        { id: 'kromanonec', name: 'Кроманьонец' }
+                    ],
+                    correctOrder: ['avstralopitek', 'habilis', 'pitekantrop', 'neandertalec', 'kromanonec']
+                }
+            },
+            '2': {
+                title: '§2. Первобытные охотники и собиратели',
+                explanation: `
+                    <div class="section-title-block">Тема: Как древние люди выживали</div>
+                    <h2 style="color: #2980b9; margin-bottom: 12px; font-size: 1.15rem;">1. Занятия первобытного человека</h2>
+                    <div class="card">
+                        <p>Основой жизнедеятельности были <strong>охота</strong>, <strong>рыболовство</strong>, <strong>собирательство</strong>. Такой тип хозяйства называется <strong>присваивающим</strong>. Орудия труда: рубила, дубины, рогатины.</p>
+                    </div>
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">2. Использование огня</h2>
+                    <div class="card">
+                        <p>Огонь использовали для приготовления пищи, обогрева, отпугивания зверей. Сначала поддерживали огонь от молнии, позже научились добывать трением.</p>
+                    </div>
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">3. Орудия и жилище</h2>
+                    <div class="card">
+                        <p>70 тысяч лет назад начался <strong>ледниковый период</strong>. Появились мамонты, шерстистые носороги. Люди делали копья, дротики, гарпуны, <strong>копьеметалку</strong>. Жилища строили из костей мамонта, покрытых шкурами.</p>
+                    </div>
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">4. Род и племя</h2>
+                    <div class="card">
+                        <p><strong>Родовая община</strong> — коллектив кровных родственников. Несколько родов — <strong>племя</strong>. Во главе стоял старейшина или вождь.</p>
+                    </div>
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">5. Расы</h2>
+                    <div class="card">
+                        <p><strong>Раса</strong> — большая группа людей с общими внешними признаками. Расы: европеоидная, монголоидная, негроидная, австралоидная. Все расы равны.</p>
+                    </div>
+                    <div class="fun-fact"><strong>🧵 Швейная мастерская:</strong> Нитки делали из жил животных, иглы — из костей.</div>
+                `,
+                questions: [
+                    { text: '1. Что помогало древним людям в охоте и собирательстве?', options: ['Орудия труда и коллективная охота', 'Только собирательство', 'Только рыболовство', 'Земледелие'], correct: 0, explanation: 'Орудия труда и коллективная охота.' },
+                    { text: '2. Почему древние люди жили большими группами?', options: ['Так было веселее', 'Одному трудно выжить', 'Так было принято по закону', 'Чтобы не скучать'], correct: 1, explanation: 'Одному трудно выжить: охота, защита, строительство.' },
+                    { text: '3. Что такое присваивающее хозяйство?', options: ['Выращивание растений', 'Охота, рыболовство, собирательство', 'Изготовление орудий', 'Строительство жилищ'], correct: 1, explanation: 'Охота, рыболовство, собирательство.' },
+                    { text: '4. Существуют ли сейчас народы с племенным строем?', options: ['Да, папуасы Новой Гвинеи', 'Нет, исчез везде', 'Да, в Европе', 'Нет, невозможно'], correct: 0, explanation: 'Папуасы Новой Гвинеи живут изолированно.' },
+                    { text: '5. Как огонь изменил жизнь человека?', options: ['Дал тепло, защиту, приготовление пищи', 'Ничего не изменил', 'Только для освещения', 'Только для охоты'], correct: 0, explanation: 'Тепло, защита, пища.' },
+                    { text: '6. Как природные условия повлияли на человека?', options: ['Не влияли', 'Климат определял занятия людей', 'Человек не зависел', 'Природа мешала'], correct: 1, explanation: 'Климат и природа определяли занятия.' }
+                ]
+            },
+            '3': {
+                title: '§3. Верования и искусство',
+                explanation: `
+                    <div class="section-title-block">Тема: Во что верили и как выражали себя</div>
+                    <h2 style="color: #2980b9; margin-bottom: 12px; font-size: 1.15rem;">1. Знания</h2>
+                    <div class="card">
+                        <p>Люди различали следы, повадки животных, знали лечебные растения. Наблюдали за небом, составили первые <strong>календари</strong>. Открыли счёт, измеряли расстояния.</p>
+                    </div>
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">2. Верования</h2>
+                    <div class="card">
+                        <p>Верили в <strong>душу</strong>, загробный мир. <strong>Тотем</strong> — животное-предок. Верили в духов, возникла <strong>религия</strong> и <strong>магия</strong> (колдовство). Обряды проводили в <strong>святилищах</strong>.</p>
+                    </div>
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">3. Искусство</h2>
+                    <div class="card">
+                        <p><strong>Пещерная живопись</strong> — Альтамира, Ласко, Капова пещера. <strong>Петроглифы</strong> — Онежское озеро, Залавруга. Скульптуры, орнаменты.</p>
+                    </div>
+                    <div class="fun-fact"><strong>🇩🇪 Немецкий акцент:</strong> Искусство — die Kunst. Пещера — die Höhle.</div>
+                `,
+                questions: [
+                    { text: '1. Какие верования зародились у древних людей?', options: ['Вера в духов, душу, тотем, магию', 'Вера в одного бога', 'Вера в науку', 'Вера в деньги'], correct: 0, explanation: 'Духи, душа, тотем, магия.' },
+                    { text: '2. О чём свидетельствуют сюжеты наскальных рисунков?', options: ['О жизни: охота, животные, ритуалы', 'О космосе', 'О математике', 'О письменности'], correct: 0, explanation: 'Охота, животные, ритуалы.' },
+                    { text: '3. Почему ритуалы носили коллективный характер?', options: ['Люди жили коллективно', 'Так было модно', 'Был закон', 'Так проще'], correct: 0, explanation: 'Люди жили коллективно.' },
+                    { text: '4. Что повлияло на появление искусства?', options: ['Наблюдения за природой', 'Скука', 'Торговля', 'Наука'], correct: 0, explanation: 'Наблюдения за природой.' },
+                    { text: '5. Памятники первобытного искусства в России?', options: ['Капова пещера, Онежские петроглифы, Залавруга', 'Эрмитаж', 'Кремль', 'Сочи'], correct: 0, explanation: 'Капова пещера, Онежские петроглифы, Залавруга.' }
+                ]
+            },
+            '4': {
+                title: '§4. Возникновение земледелия, скотоводства и ремесла',
+                explanation: `
+                    <div class="section-title-block">Тема: Как человек перешёл к производящему хозяйству</div>
+
+                    <h2 style="color: #2980b9; margin-bottom: 12px; font-size: 1.15rem;">1. Переход к производящему хозяйству</h2>
+                    <div class="card">
+                        <p>С отступлением ледника климат стал близок к современному. Мамонты вымерли. Человек изобрёл <strong>лук и стрелы</strong>, для ловли рыбы — <strong>сеть</strong>. Помощником на охоте стала <strong>собака</strong>.</p>
+                        <p>Примерно <strong>10 тысяч лет назад</strong> начался период <strong>неолита</strong> («новый каменный век»). С этого времени начинается время <strong>производящего хозяйства</strong>. Его главная особенность — переход от охоты и собирательства к <strong>производству</strong> жизненно необходимых продуктов.</p>
+                        <p>Люди заметили, что зёрна, упавшие в землю, прорастают. Так возникло <strong>земледелие</strong>. Почву обрабатывали деревянными мотыгами, при сборе урожая использовали жатвенные ножи. Земледелие способствовало переходу к <strong>оседлому образу жизни</strong>. Первые земледельцы обитали в Передней Азии.</p>
+                        <p>Охотники научились приручать диких животных. Появились козы, овцы, свиньи, коровы, ослы. Так возникло <strong>скотоводство</strong>.</p>
+                    </div>
+
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">2. Новые виды деятельности</h2>
+                    <div class="card">
+                        <p>С изобретением <strong>деревянного плуга</strong> улучшилась обработка земли. Расширение посевной площади увеличивало урожаи, часть людей освобождалась от земледельческих работ для других занятий.</p>
+                        <p>Первые <strong>ремёсла</strong> возникали постепенно. Из глины стали изготавливать сосуды — <strong>керамику</strong>. С изобретением гончарного круга изделия принимали более совершенные формы.</p>
+                        <p>Люди научились обрабатывать камень, дерево, кость: пиление, шлифование, сверление. Освоили <strong>прядение и ткачество</strong>. Постепенно ткань заменила шкуры животных.</p>
+                        <p>Произошло отделение от земледелия <strong>ремесла</strong> как самостоятельной деятельности. Ремесленник мог обменивать изделия на продукты. Развивается <strong>обмен</strong>, появляются <strong>торговые пути</strong>.</p>
+                        <p>В <strong>4-м тысячелетии до н. э.</strong> на Востоке люди изобрели <strong>колесо</strong>. Появились первые повозки.</p>
+                    </div>
+
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">3. Век металлов</h2>
+                    <div class="card">
+                        <p>Приблизительно в <strong>4-м тысячелетии до н. э.</strong> люди научились получать <strong>медь</strong> из руды. Период распространения медных орудий называют <strong>энеолитом</strong>.</p>
+                        <p><strong>3–2-е тысячелетия до н. э.</strong> — начало <strong>бронзового века</strong>. Бронзу получали из сплава меди с другими металлами.</p>
+                        <p>Способ получения <strong>железа</strong> из руды был открыт во <strong>2-м тысячелетии до н. э.</strong> С помощью железных орудий совершенствовалась обработка дерева, строительство, изготовление предметов быта. Появились новые ремёсла: кузнечное, оружейное.</p>
+                    </div>
+
+                    <h2 style="color: #2980b9; margin: 15px 0 12px; font-size: 1.15rem;">4. От родовой общины к соседской</h2>
+                    <div class="card">
+                        <p>Успехи в хозяйстве изменили жизнь. Поселения охотников превратились в посёлки земледельцев. Каждый член общины имел отдельный участок земли, обрабатывал его и кормил свою семью. Родовую общину сменила <strong>соседская община</strong> — коллектив семей-соседей, которые вели отдельные хозяйства.</p>
+                        <p>Урожай позволял не только прокормить семью, но и получить <strong>излишки</strong>. Это повлекло за собой <strong>имущественное неравенство</strong> — появляются более состоятельные семьи.</p>
+                        <p>Старейшины, вожди, шаманы сосредоточивали в своих руках руководство, организацию военного дела, проведение обрядов. Они владели лучшими наделами земли, большими стадами. Началось выделение <strong>знати</strong>. Знатные люди закрепляли за собой власть и стали передавать её по наследству.</p>
+                    </div>
+
+                    <div class="fun-fact">
+                        <strong>🌾 Садоводческая минутка:</strong> Представь, что ты древний земледелец. Ты посадил зерно, а через несколько месяцев получил целый колос. Это и есть производящее хозяйство — ты не просто берёшь у природы, а производишь сам!
+                    </div>
+
+                    <div class="fun-fact">
+                        <strong>🧵 Швейная мастерская:</strong> С изобретением ткачества люди научились делать ткань из волокон растений и шерсти животных. Попробуй представить, как это — ткать на примитивном станке!
+                    </div>
+                `,
+                questions: [
+                    {
+                        text: '1. Какое хозяйство называют производящим?',
+                        options: ['Охота, рыболовство, собирательство', 'Земледелие и скотоводство', 'Изготовление орудий труда', 'Строительство жилищ'],
+                        correct: 1,
+                        explanation: 'Производящее хозяйство — это земледелие и скотоводство.'
+                    },
+                    {
+                        text: '2. Объясните причины возникновения имущественного неравенства. По вашему мнению, появление неравенства имело больше положительных или отрицательных последствий?',
+                        options: ['Излишки продуктов → накопление богатства → неравенство; последствия неоднозначны', 'Неравенство возникло из-за лени', 'Неравенство возникло из-за войн', 'Неравенство не возникало'],
+                        correct: 0,
+                        explanation: 'Излишки продуктов позволяли накапливать богатство, что привело к неравенству.'
+                    },
+                    {
+                        text: '3. Подумайте, как земледелие и скотоводство повлияло на жизнь древних людей.',
+                        options: ['Люди перешли к оседлому образу жизни, появились излишки', 'Люди стали кочевать', 'Люди вернулись к охоте', 'Ничего не изменилось'],
+                        correct: 0,
+                        explanation: 'Земледелие способствовало оседлому образу жизни.'
+                    },
+                    {
+                        text: '4. Как и почему появились первые ремёсла? Как их появление изменило жизнь древних людей?',
+                        options: ['Из-за необходимости в сосудах, тканях; ремесленники стали обменивать изделия', 'Из-за скуки', 'Из-за войн', 'Из-за торговли'],
+                        correct: 0,
+                        explanation: 'Ремёсла возникли из потребности в керамике, тканях, орудиях.'
+                    },
+                    {
+                        text: '5. Сравните жизнь людей до открытия металлов и после. Какие возможности появились?',
+                        options: ['Металлы позволили делать более прочные орудия, увеличить производство', 'Металлы ничего не изменили', 'Металлы использовали только для украшений', 'Металлы использовали только для оружия'],
+                        correct: 0,
+                        explanation: 'Металлические орудия были прочнее, что увеличило производство.'
+                    },
+                    {
+                        text: '6. Объясните, почему стало возможно вести хозяйство более маленькими группами — семьями.',
+                        options: ['Появились излишки, семья могла прокормить себя', 'Люди стали лениться', 'Люди стали кочевать', 'Люди вернулись к охоте'],
+                        correct: 0,
+                        explanation: 'Излишки продуктов позволяли семье вести отдельное хозяйство.'
+                    },
+                    {
+                        text: '7. В дополнительных источниках выясните, как учёные назвали переход от присваивающего хозяйства к производящему. Как вы думаете, почему?',
+                        options: ['Неолитическая революция; потому что это был переворот в жизни людей', 'Промышленная революция', 'Научно-техническая революция', 'Аграрная революция'],
+                        correct: 0,
+                        explanation: 'Этот переход называют неолитической революцией.'
+                    }
+                ],
+                chronology: {
+                    question: 'Расположите в хронологической последовательности исторические события:',
+                    items: [
+                        { id: 'ogon', name: 'Овладение огнём' },
+                        { id: 'luk', name: 'Изобретение лука' },
+                        { id: 'plug', name: 'Изобретение плуга' },
+                        { id: 'med', name: 'Появление изделий из меди' },
+                        { id: 'zhelezo', name: 'Начало обработки железа' }
+                    ],
+                    correctOrder: ['ogon', 'luk', 'plug', 'med', 'zhelezo']
+                }
+            },
+            'final': {
+                title: '🏆 Итоговый тест по главе I',
+                isFinal: true,
+                explanation: `
+                    <div class="final-title-block">Итоговый тест по главе I «Первобытное общество»</div>
+                    <p style="margin-bottom: 15px;">Ответь на вопросы по всем четырём параграфам. В каждом вопросе есть кнопка <strong>«Подсказка»</strong>, если затрудняешься.</p>
+                `,
+                questions: [
+                    {
+                        text: '1. Сколько лет длилась эпоха первобытности?',
+                        options: ['Около 3 миллионов лет', 'Около 40 тысяч лет', 'Около 10 тысяч лет', 'Около 5 тысяч лет'],
+                        correct: 0,
+                        explanation: 'Эпоха первобытности длилась около 3 миллионов лет.',
+                        hint: 'Посмотри в «Итоги главы I» — там сказано, сколько длилась эпоха первобытности.'
+                    },
+                    {
+                        text: '2. Когда появился человек современного вида?',
+                        options: ['Около 3 миллионов лет назад', 'Около 40 тысяч лет назад', 'Около 10 тысяч лет назад', 'Около 2 миллионов лет назад'],
+                        correct: 1,
+                        explanation: 'Человек современного вида появился около 40 тысяч лет назад.',
+                        hint: 'Это кроманьонец — человек современного типа.'
+                    },
+                    {
+                        text: '3. Почему у древнего человека начали развиваться речь и мышление?',
+                        options: ['Из-за труда и общения в коллективе', 'Из-за охоты в одиночку', 'Из-за жизни в пещерах', 'Из-за страха перед животными'],
+                        correct: 0,
+                        explanation: 'Труд и общение в коллективе способствовали развитию речи и мышления.',
+                        hint: 'Вспомни, что трудовая деятельность меняла человека: руки, мозг, речь.'
+                    },
+                    {
+                        text: '4. Докажите, что появление производящего хозяйства является развитием человеческого общества.',
+                        options: ['Люди научились производить продукты сами, появились излишки, неравенство, знать', 'Люди вернулись к охоте', 'Люди стали кочевать', 'Ничего не изменилось'],
+                        correct: 0,
+                        explanation: 'Производящее хозяйство позволило производить продукты, появились излишки, неравенство, знать — это шаг вперёд.',
+                        hint: 'Сравни присваивающее и производящее хозяйство: что изменилось в жизни людей?'
+                    },
+                    {
+                        text: '5. Какова была духовная жизнь человека каменного века? Чем она отличалась от духовной жизни человека бронзового века?',
+                        options: ['В каменном веке — вера в духов, магия; в бронзовом — более сложные религии', 'Духовной жизни не было', 'В каменном веке — наука; в бронзовом — магия', 'Ничего не изменилось'],
+                        correct: 0,
+                        explanation: 'В каменном веке — вера в духов, тотемы, магия. В бронзовом веке религия усложняется.',
+                        hint: 'Вспомни §3 «Верования и искусство» и §4 «Век металлов».'
+                    },
+                    {
+                        text: '6. Какие стоянки первобытных людей открыты на территории России?',
+                        options: ['Костёнки, Сунгирь, Капова пещера, Мальта', 'Только Костёнки', 'Только Сунгирь', 'Только Капова пещера'],
+                        correct: 0,
+                        explanation: 'Костёнки, Сунгирь, Капова пещера, Мальта — самые известные стоянки в России.',
+                        hint: 'Вспомни §1 «Первобытность на территории России».'
+                    },
+                    {
+                        text: '7. Сравните искусство древних людей и современных. Что общего? В чём различия?',
+                        options: ['Общее — изображение животных и людей; различие — у древних магический смысл, у современных — эстетический', 'Ничего общего', 'Только различия', 'Только общее'],
+                        correct: 0,
+                        explanation: 'Общее — изображение животных и людей. Различие — у древних искусство имело магический смысл, у современных — эстетический.',
+                        hint: 'Подумай, зачем древние рисовали: для красоты или для удачной охоты?'
+                    },
+                    {
+                        text: '8. Подумайте, почему именно танец был важной частью духовной жизни древних людей.',
+                        options: ['Танец был частью ритуалов, помогал общаться с духами', 'Танец был развлечением', 'Танец был спортом', 'Танец был искусством'],
+                        correct: 0,
+                        explanation: 'Танец был частью ритуалов и магии, помогал общаться с духами.',
+                        hint: 'Вспомни §3 «Верования»: как проводили обряды?'
+                    },
+                    {
+                        text: '9. На смену какой общине пришла соседская община?',
+                        options: ['Родовой общине', 'Племени', 'Семье', 'Государству'],
+                        correct: 0,
+                        explanation: 'На смену родовой общине пришла соседская.',
+                        hint: 'Посмотри «Итоги главы I» — там сказано про смену общин.'
+                    },
+                    {
+                        text: '10. Во главе племени стоял...',
+                        options: ['Вождь', 'Царь', 'Фараон', 'Император'],
+                        correct: 0,
+                        explanation: 'Во главе племени стоял вождь.',
+                        hint: 'Этот человек собирал соплеменников для защиты и в походы.'
+                    }
+                ]
+            }
+        };
+
+        let currentSection = null;
+        let userAnswers = {};
+        let chronologyOrder = {};
+
+        function openSection(id) {
+            if (!data[id]) return;
+            currentSection = id;
+            document.getElementById('main-menu').classList.add('hidden');
+            document.getElementById('section-content').classList.remove('hidden');
+            document.getElementById('section-title').textContent = data[id].title;
+            userAnswers = {};
+            chronologyOrder = {};
+            renderContent(id);
+            updateProgress();
+        }
+
+        function goBack() {
+            document.getElementById('main-menu').classList.remove('hidden');
+            document.getElementById('section-content').classList.add('hidden');
+            currentSection = null;
+        }
+
+        function renderContent(id) {
+            const section = data[id];
+            const area = document.getElementById('content-area');
+            let html = section.explanation;
+
+            html += `<h2 style="color: #2980b9; margin: 20px 0 12px; font-size: 1.15rem;">Проверь себя!</h2>`;
+
+            section.questions.forEach((q, index) => {
+                const qKey = `${id}-${index}`;
+                const selected = userAnswers[qKey];
+                const hintId = `hint-${qKey}`;
+                html += `
+                    <div class="question-block">
+                        <div class="question-text">${q.text}</div>
+                        <div class="options">
+                            ${q.options.map((opt, optIndex) => {
+                                let btnClass = 'option-btn';
+                                if (selected !== undefined) {
+                                    if (optIndex === q.correct) btnClass += ' correct';
+                                    else if (optIndex === selected) btnClass += ' wrong';
+                                }
+                                return `<button class="${btnClass}" onclick="selectAnswer('${qKey}', ${optIndex})" ${selected !== undefined ? 'disabled' : ''}>${opt}</button>`;
+                            }).join('')}
+                        </div>
+                        <div class="feedback ${selected !== undefined ? (selected === q.correct ? 'correct' : 'wrong') : ''}">
+                            ${selected !== undefined ? (selected === q.correct ? '✅ Верно! ' + q.explanation : '❌ Неверно. ' + q.explanation) : ''}
+                        </div>
+                        ${q.hint ? `<button class="hint-btn" onclick="toggleHint('${hintId}')">💡 Подсказка</button>
+                        <div class="hint-box" id="${hintId}">${q.hint}</div>` : ''}
+                    </div>
+                `;
+            });
+
+            if (section.chronology) {
+                html += `<h2 style="color: #2980b9; margin: 20px 0 12px; font-size: 1.15rem;">Работаем с хронологией</h2>`;
+                html += `<div class="question-block">
+                    <div class="question-text">${section.chronology.question}</div>
+                    <div id="chrono-list" style="display:flex; flex-direction:column; gap:6px;"></div>
+                    <div class="feedback" id="chrono-feedback"></div>
+                </div>`;
+            }
+
+            area.innerHTML = html;
+
+            if (section.chronology) {
+                const list = document.getElementById('chrono-list');
+                const items = [...section.chronology.items];
+                for (let i = items.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [items[i], items[j]] = [items[j], items[i]];
+                }
+                chronologyOrder[id] = [];
+                items.forEach(item => {
+                    const btn = document.createElement('button');
+                    btn.className = 'option-btn';
+                    btn.textContent = item.name;
+                    btn.dataset.id = item.id;
+                    btn.onclick = () => {
+                        if (chronologyOrder[id].includes(item.id)) {
+                            chronologyOrder[id] = chronologyOrder[id].filter(x => x !== item.id);
+                            btn.classList.remove('correct');
+                        } else {
+                            chronologyOrder[id].push(item.id);
+                            btn.classList.add('correct');
+                        }
+                        checkChronology(id);
+                    };
+                    list.appendChild(btn);
+                });
+            }
+        }
+
+        function toggleHint(hintId) {
+            const el = document.getElementById(hintId);
+            if (el) el.classList.toggle('show');
+        }
+
+        function selectAnswer(qKey, optIndex) {
+            if (userAnswers[qKey] !== undefined) return;
+            userAnswers[qKey] = optIndex;
+            renderContent(currentSection);
+            updateProgress();
+        }
+
+        function checkChronology(id) {
+            const section = data[id];
+            if (!section.chronology) return;
+            const correct = section.chronology.correctOrder;
+            const fb = document.getElementById('chrono-feedback');
+            const order = chronologyOrder[id] || [];
+            if (order.length !== correct.length) {
+                fb.className = 'feedback';
+                fb.textContent = `Выбрано: ${order.length} из ${correct.length}`;
+                return;
+            }
+            const isCorrect = order.every((itemId, i) => itemId === correct[i]);
+            if (isCorrect) {
+                fb.className = 'feedback correct';
+                fb.textContent = '✅ Верно!';
+            } else {
+                fb.className = 'feedback wrong';
+                fb.textContent = '❌ Неверно. Попробуй ещё раз!';
+            }
+        }
+
+        function updateProgress() {
+            const section = data[currentSection];
+            const total = section.questions.length;
+            const answered = section.questions.filter((_, i) => userAnswers[`${currentSection}-${i}`] !== undefined).length;
+            const percent = (answered / total) * 100;
+            document.getElementById('progress-fill').style.width = percent + '%';
+        }
+
+        document.getElementById('main-menu').classList.remove('hidden');
+    </script>
+</body>
+</html>
